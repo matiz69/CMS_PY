@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -35,7 +35,9 @@ class Meeting(db.Model):
 
 @app.route('/')
 def home():
-    return 'hello world'
+    company_list = Company.query.all()
+    meeting_list = Meeting.query.all()
+    return render_template('base.html', company_list=company_list, meeting_list=meeting_list)
 
 
 if __name__ == '__main__':
