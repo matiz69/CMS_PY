@@ -14,7 +14,7 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     phone_num = db.Column(db.String(20), nullable=False, unique=True)
-    status = db.Column(db.Integer(10), nullable=False)
+    status = db.Column(db.Integer, nullable=False)
     addit_info = db.Column(db.String, nullable=True)
 
 
