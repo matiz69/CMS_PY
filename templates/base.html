@@ -11,17 +11,36 @@
 </head>
 <body>
 
-    {% for comp in company_list %}
-    <div>
-        <p class="ui segment">{{comp.id }} | {{comp.name }}</p>
-        <!--     here, code that indicates- what else will be in segment of single company on page.-->
-    </div>
 
-    {% for meet in meeting_list %}
-    <div>
-        <p class="ui segment">{{meet.id }} | {{meet.date }} | {{meet.time }}</p>
-        <!--    here, code that indicates- what else will be in segment of single meeting on page.-->
-        <!--    remember to display here company name, by linking phone_num. Get company name from Company table.-->
+    <div style="margin-top: 50px;" class="ui container">
+        <h1 class="ui center aligned header">Customer Relational Management Software</h1>
+
+        <form class="ui form" action="/add_company" method="post">
+            <div class="field">
+                <label><h1>Company name</h1></label>
+                <input type="text" name="name" placeholder="enter company name">
+                <label><h1>phone</h1></label>
+                <input type="text" name="name" placeholder="enter phone number">
+                <label><h1>Additional info</h1></label>
+                <input type="text" name="name" placeholder="enter additional information">
+            </div>
+            <button class="ui green button" type="submit">Add Company</button>
+        </form>
+
+        {% for comp in company_list %}
+        <div>
+            <p class="ui segment">{{comp.id }} | {{comp.name }}</p>
+            <!--     here, code that indicates- what else will be in segment of single company on page.-->
+        </div>
+        {% endfor %}
+
+        {% for meet in meeting_list %}
+        <div>
+            <p class="ui segment">{{meet.id }} | {{meet.date }} | {{meet.time }}</p>
+            <!--    here, code that indicates- what else will be in segment of single meeting on page.-->
+            <!--    remember to display here company name, by linking phone_num. Get company name from Company table.-->
+        </div>
+        {% endfor %}
     </div>
 </body>
 </html>
