@@ -39,6 +39,16 @@ def home():
     meeting_list = Meeting.query.all()
     return render_template('base.html', company_list=company_list, meeting_list=meeting_list)
 
+@app.route('/add_company', methods=["POST"])
+def add_company():
+    company_name = request.form.get("company_name")
+    company_phone = request.form.get("company_phone")
+    company_addinfo = request.form.get("company_addinfo")
+    new_company = Company(name=company_name, phone_num=company_phone, status=0, addit_info=company_addinfo)
+    db.session.add(new_company)
+    db.session.commit()
+    return redirect(url_for("home"))
+
 
 if __name__ == '__main__':
     with app.app_context():
