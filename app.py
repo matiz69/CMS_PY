@@ -49,6 +49,16 @@ def add_company():
     db.session.commit()
     return redirect(url_for("home"))
 
+@app.route("/update_status/<int:company_id>")
+def update_status(company_id):
+    company = Company.query.filter_by(id=company_id).first()
+    company.status += 1
+    db.session.commit()
+    return redirect(url_for("home"))
+
+
+
+
 
 if __name__ == '__main__':
     with app.app_context():
