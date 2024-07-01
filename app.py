@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, request, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
@@ -52,12 +54,16 @@ def add_company():
 @app.route("/update_status/<int:company_id>")
 def update_status(company_id):
     company = Company.query.filter_by(id=company_id).first()
-    company.status += 1
-    db.session.commit()
-    return redirect(url_for("home"))
-
-
-
+    if company.status < 5:
+        company.status += 1
+        db.session.commit()
+        return redirect(url_for("home"))
+    else:
+        status_limit = True
+        company_list = Company.query.all()
+        meeting_list = Meeting.query.all()
+        return render_template(
+            'base.html', status_limit=status_limit, company_list=company_list, meeting_list=meeting_list)
 
 
 if __name__ == '__main__':
