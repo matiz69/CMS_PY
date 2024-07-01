@@ -31,6 +31,11 @@
         <div>
             <p class="ui segment">{{comp.id }} | {{comp.name }}<br>{{comp.addit_info }} | Current status: {{comp.status }}
             <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Update status</a></p>
+            {% if status_limit %}
+                <div class="ui red message limit_status_message">
+                    <p>status for {{ comp.name }} is reached.</p>
+                </div>
+            {% endif %}
             <!--     here, code that indicates- what else will be in segment of single company on page.-->
         </div>
         {% endfor %}
