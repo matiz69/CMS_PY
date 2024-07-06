@@ -27,16 +27,25 @@
             <button class="ui green button" type="submit">Add Company</button>
         </form>
 
-        {% for comp in company_list %}
+         {% for comp in company_list %}
         <div>
-            <p class="ui segment">{{comp.id }} | {{comp.name }}<br>{{comp.addit_info }} | Current status: {{comp.status }}
-            <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Update status</a></p>
-            {% if status_limit %}
-                <div class="ui red message limit_status_message">
-                    <p>status for {{ comp.name }} is reached.</p>
-                </div>
+            <p class="ui segment">{{ comp.id }} | {{ comp.name }}<br>{{ comp.addit_info }} | Obecny status: {{ comp.status }}
+            <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Aktualizuj status</a></p>
+
+            {% if comp.status > 5 %}
+            <div class="ui red message limit_status_message" id="status_message_{{ comp.id }}">
+                <p>Status dla {{ comp.name }} został osiągnięty.</p>
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('status_message_{{ comp.id }}').style.display = 'block';
+                    setTimeout(function() {
+                        document.getElementById('status_message_{{ comp.id }}').style.display = 'none';
+                    }, 5000);
+                }, 0);
+            </script>
             {% endif %}
-            <!--     here, code that indicates- what else will be in segment of single company on page.-->
+
         </div>
         {% endfor %}
 
