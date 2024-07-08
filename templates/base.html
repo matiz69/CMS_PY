@@ -27,24 +27,22 @@
             <button class="ui green button" type="submit">Add Company</button>
         </form>
 
+        {% if show_status_message %}
+        <div class="ui red message limit_status_message" id="global_status_message">
+            <p>Status końcowy został osiągnięty - nie może być większy niż 5.</p>
+        </div>
+        <script>
+            document.getElementById('global_status_message').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('global_status_message').style.display = 'none';
+            }, 5000);
+        </script>
+        {% endif %}
+
          {% for comp in company_list %}
         <div>
             <p class="ui segment">{{ comp.id }} | {{ comp.name }}<br>{{ comp.addit_info }} | Obecny status: {{ comp.status }}
             <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Aktualizuj status</a></p>
-
-            {% if comp.status > 5 %}
-            <div class="ui red message limit_status_message" id="status_message_{{ comp.id }}">
-                <p>Status dla {{ comp.name }} został osiągnięty.</p>
-            </div>
-            <script>
-                setTimeout(function() {
-                    document.getElementById('status_message_{{ comp.id }}').style.display = 'block';
-                    setTimeout(function() {
-                        document.getElementById('status_message_{{ comp.id }}').style.display = 'none';
-                    }, 5000);
-                }, 0);
-            </script>
-            {% endif %}
 
         </div>
         {% endfor %}
