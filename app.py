@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, request, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
@@ -37,7 +39,11 @@ class Meeting(db.Model):
 def home():
     company_list = Company.query.all()
     meeting_list = Meeting.query.all()
-    return render_template('base.html', company_list=company_list, meeting_list=meeting_list)
+    show_status_message = request.args.get('show_status_message', 'False').lower() in ['true', '1', 't', 'y', 'yes']
+    return render_template('base.html',
+                           company_list=company_list,
+                           meeting_list=meeting_list,
+                           show_status_message=show_status_message)
 
 @app.route('/add_company', methods=["POST"])
 def add_company():
@@ -52,10 +58,13 @@ def add_company():
 @app.route("/update_status/<int:company_id>")
 def update_status(company_id):
     company = Company.query.filter_by(id=company_id).first()
-    company.status += 1
+    show_status_message = False
+    if company.status < 5:
+        company.status += 1
+    else:
+        show_status_message = True
     db.session.commit()
-    return redirect(url_for("home"))
-
+    return redirect(url_for("home", show_status_message=show_status_message))
 
 
 if __name__ == '__main__':
