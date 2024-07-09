@@ -27,17 +27,7 @@
             <button class="ui green button" type="submit">Add Company</button>
         </form>
 
-        {% if show_status_message %}
-            <div class="ui red message limit_status_message" id="global_status_message">
-            <p>Status końcowy został osiągnięty - nie może być większy niż 5.</p>
-            </div>
-        <script>
-            document.getElementById('global_status_message').style.display = 'block';
-            setTimeout(function() {
-                document.getElementById('global_status_message').style.display = 'none';
-            }, 5000);
-        </script>
-        {% endif %}
+    {% include 'notifications.html' %}
 
          {% for comp in company_list %}
         <div>
