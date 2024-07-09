@@ -34,16 +34,22 @@ class Meeting(db.Model):
         self.time = time
 
 
-
 @app.route('/')
 def home():
     company_list = Company.query.all()
     meeting_list = Meeting.query.all()
-    show_status_message = request.args.get('show_status_message', 'False').lower() in ['true', '1', 't', 'y', 'yes']
+
+    # Sprawdź czy istnieją jakiekolwiek firmy w bazie danych
+    if not company_list:
+        show_status_message = False
+    else:
+        show_status_message = request.args.get('show_status_message', '').lower() in ['true', '1', 't', 'y', 'yes']
+
     return render_template('base.html',
                            company_list=company_list,
                            meeting_list=meeting_list,
                            show_status_message=show_status_message)
+
 
 @app.route('/add_company', methods=["POST"])
 def add_company():
