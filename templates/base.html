@@ -31,8 +31,9 @@
 
          {% for comp in company_list %}
         <div>
-            <p class="ui segment">{{ comp.id }} | {{ comp.name }}<br>{{ comp.addit_info }} | Obecny status: {{ comp.status }}
-            <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Aktualizuj status</a></p>
+            <p class="ui segment">{{ comp.id }} | {{ comp.name }} | {{ comp.addit_info }} | Obecny status: {{ comp.status }}
+            <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Update Status</a>
+            <a class="ui yellow button" href="/archive this company/{{ comp.id }}">Archive</a></p>
 
         </div>
         {% endfor %}
