@@ -69,7 +69,8 @@ def add_company():
     company_name = request.form.get("company_name")
     company_phone = request.form.get("company_phone")
     company_addinfo = request.form.get("company_addinfo")
-    if company_name != "" and company_phone != "":
+    if company_name != "" and company_phone != "" and len(company_phone) > 8 \
+            and company_phone.isdigit() == True:
         new_company = Company(name=company_name, phone_num=company_phone, status=0, addit_info=company_addinfo)
         db.session.add(new_company)
         db.session.commit()
