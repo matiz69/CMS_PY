@@ -17,6 +17,7 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     phone_num = db.Column(db.String(20), nullable=False, unique=True)
+    industry = db.Column(db.String(30), nullable=False)
     status = db.Column(db.Integer, nullable=False, default=0)
     addit_info = db.Column(db.String, nullable=True)
 
@@ -66,10 +67,12 @@ def add_company():
     invalid_data = False
     company_name = request.form.get("company_name")
     company_phone = request.form.get("company_phone")
+    company_industry = request.form.get("company_industry")
     company_addinfo = request.form.get("company_addinfo")
     if company_name != "" and company_phone != "" and len(company_phone) > 8 \
             and company_phone.isdigit() == True:
-        new_company = Company(name=company_name, phone_num=company_phone, status=0, addit_info=company_addinfo)
+        new_company = Company(name=company_name, phone_num=company_phone,
+                              industry=company_industry, status=0, addit_info=company_addinfo)
         db.session.add(new_company)
         db.session.commit()
     else:
