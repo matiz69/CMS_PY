@@ -49,13 +49,11 @@ class Archived_Company(db.Model):
 def home():
     company_list = Company.query.all()
     meeting_list = Meeting.query.all()
-
-    # Sprawdź czy istnieją jakiekolwiek firmy w bazie danych
+    invalid_data = request.args.get('invalid_data', '').lower() in ['true', '1', 't', 'y', 'yes']
     if not company_list:
         show_status_message = False
     else:
         show_status_message = request.args.get('show_status_message', '').lower() in ['true', '1', 't', 'y', 'yes']
-        invalid_data = request.args.get('invalid_data', '').lower() in ['true', '1', 't', 'y', 'yes']
     return render_template('base.html',
                            company_list=company_list,
                            meeting_list=meeting_list,
