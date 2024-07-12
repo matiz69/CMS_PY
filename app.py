@@ -42,6 +42,7 @@ class Archived_Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     phone_num = db.Column(db.String(20), nullable=False, unique=True)
+    industry = db.Column(db.String(30), nullable=False)
     status = db.Column(db.Integer, nullable=False)
     addit_info = db.Column(db.String, nullable=True)
     close_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -95,6 +96,7 @@ def archive_company(company_id):
     to_archive = Company.query.filter_by(id=company_id).first()
     new_archived_comp = Archived_Company(name=to_archive.name,
                                         phone_num=to_archive.phone_num,
+                                        industry=to_archive.industry,
                                         status=to_archive.status,
                                         addit_info=to_archive.addit_info,
                                         close_date=datetime.utcnow())
