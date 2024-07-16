@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 
+    <script>
+        async function fetchIndustries() {
+            const response = await fetch('/get_industry_list');
+            const industries = await response.json();
+            return industries;
+        }
+
+        async function showIndustryList() {
+            const industries = await fetchIndustries();
+            const dataList = document.getElementById('industry-list');
+            dataList.innerHTML = '';
+
+            industries.forEach(industry => {
+                const option = document.createElement('option');
+                option.value = industry;
+                dataList.appendChild(option);
+            });
+        }
+    </script>
+
 </head>
 <body>
 
@@ -17,13 +37,15 @@
 
         <form class="ui form" action="/add_company" method="post">
             <div class="field">
-                <label><h1>Company name</h1></label>
+                <label><h2>Company name</h2></label>
                 <input type="text" name="company_name" placeholder="enter company name">
-                <label><h1>phone</h1></label>
+                <label><h2>phone</h2></label>
                 <input type="text" name="company_phone" placeholder="enter phone number">
-                <label><h1>industry</h1></label>
-                <input type="text" name="company_industry" placeholder="enter industry of the company">
-                <label><h1>Additional info</h1></label>
+                <label><h2>industry</h2></label>
+                <input type="text" name="company_industry" placeholder="Enter the company industry"
+                       list="industry-list" onclick="showIndustryList()">
+                <datalist id="industry-list"></datalist>
+                <label><h2>Additional info</h2></label>
                 <input type="text" name="company_addinfo" placeholder="enter additional information">
             </div>
             <button class="ui green button" type="submit">Add Company</button>
@@ -31,9 +53,10 @@
 
     {% include 'notifications.html' %}
 
-         {% for comp in company_list %}
+        {% for comp in company_list %}
         <div>
-            <p class="ui segment">{{ comp.id }} | {{ comp.name }} | {{ comp.addit_info }} | Obecny status: {{ comp.status }}
+            <p class="ui segment">{{ comp.id }} | {{ comp.name }} | {{ comp.addit_info }}
+                | Obecny status: {{ comp.status }} | branża: {{ comp.industry }}
             <br><a class="ui blue button" href="/update_status/{{ comp.id }}">Update Status</a>
             <a class="ui yellow button" href="/archive this company/{{ comp.id }}">Archive</a></p>
 

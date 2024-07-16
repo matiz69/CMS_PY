@@ -2,7 +2,7 @@
 
 <!--Status has reached it's limit and user is still trying to update it -->
 {% if show_status_message %}
-    <div class="ui red message limit_status_message" id="global_status_message">
+    <div class="ui red message limit_status_message" id="limit_reached">
         <p>finish status has been reached for some company - if work is done, archive it!!.</p>
     </div>
     <script>
@@ -15,7 +15,19 @@
 
 {% if invalid_data %}
     <div class="ui red message limit_status_message" id="invalid_data_entered">
-        <p>invalid data has been entered, check if .</p>
+        <p>invalid data has been entered.</p>
+    </div>
+    <script>
+        document.getElementById('invalid_data_entered').style.display = 'block';
+            setTimeout(function() {
+                document.getElementById('invalid_data_entered').style.display = 'none';
+            }, 5000);
+    </script>
+{% endif %}
+
+{% if invalid_industry %}
+    <div class="ui red message limit_status_message" id="invalid_industry">
+        <p>invalid industry has been entered.</p>
     </div>
     <script>
         document.getElementById('invalid_data_entered').style.display = 'block';

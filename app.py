@@ -1,8 +1,9 @@
 import time
 
-from flask import Flask, request, url_for, redirect, render_template
+from flask import Flask, request, url_for, redirect, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from enums import Industries
 
 app = Flask(__name__)
 
@@ -52,6 +53,8 @@ def home():
     company_list = Company.query.all()
     meeting_list = Meeting.query.all()
     invalid_data = request.args.get('invalid_data', '').lower() in ['true', '1', 't', 'y', 'yes']
+    invalid_industry = request.args.get('invalid_industry', '').lower() in ['true', '1', 't', 'y', 'yes']
+
     if not company_list:
         show_status_message = False
     else:
@@ -60,25 +63,31 @@ def home():
                            company_list=company_list,
                            meeting_list=meeting_list,
                            show_status_message=show_status_message,
-                           invalid_data=invalid_data)
+                           invalid_data=invalid_data,
+                           invalid_industry=invalid_industry)
 
 
 @app.route('/add_company', methods=["POST"])
 def add_company():
     invalid_data = False
+    invalid_industry = False
     company_name = request.form.get("company_name")
     company_phone = request.form.get("company_phone")
     company_industry = request.form.get("company_industry")
     company_addinfo = request.form.get("company_addinfo")
     if company_name != "" and company_phone != "" and len(company_phone) > 8 \
-            and company_phone.isdigit() == True and company_industry != "":
+            and company_phone.isdigit()==True and company_industry != "" \
+            and company_industry in [industry.value for industry in Industries]:
         new_company = Company(name=company_name, phone_num=company_phone,
                               industry=company_industry, status=0, addit_info=company_addinfo)
         db.session.add(new_company)
         db.session.commit()
+    elif company_industry not in [industry.value for industry in Industries] and company_industry != "":
+        invalid_industry = True
     else:
         invalid_data = True
-    return redirect(url_for("home", invalid_data=invalid_data))
+
+    return redirect(url_for("home", invalid_data=invalid_data, invalid_industry=invalid_industry))
 
 @app.route("/update_status/<int:company_id>")
 def update_status(company_id):
@@ -104,6 +113,17 @@ def archive_company(company_id):
     db.session.add(new_archived_comp)
     db.session.commit()
     return redirect(url_for("home"))
+
+
+@app.route('/get_industry_list', methods=['GET'])
+def get_industry_list():
+    industries = []
+    for ind in Industries:
+        if isinstance(ind.value, tuple):
+            industries.extend(ind.value)
+        else:
+            industries.append(ind.value)
+    return jsonify(industries)
 
 
 if __name__ == '__main__':
