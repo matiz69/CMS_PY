@@ -77,13 +77,13 @@ def add_company():
     company_addinfo = request.form.get("company_addinfo")
     if company_name != "" and company_phone != "" and len(company_phone) > 8 \
             and company_phone.isdigit()==True and company_industry != "" \
-            and company_industry in[industry.value for industry in Industries]:
+            and company_industry in [industry.value for industry in Industries]:
         new_company = Company(name=company_name, phone_num=company_phone,
                               industry=company_industry, status=0, addit_info=company_addinfo)
         db.session.add(new_company)
         db.session.commit()
     elif company_industry not in [industry.value for industry in Industries] and company_industry != "":
-         invalid_industry = True
+        invalid_industry = True
     else:
         invalid_data = True
 
